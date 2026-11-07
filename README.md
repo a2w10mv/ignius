@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="temperature-and-heat/public/images/brand/calphy-logo.png" alt="Ignius logo" width="140" />
+<img src="public/images/brand/calphy-logo.png" alt="Ignius logo" width="140" />
 
 # Ignius
 
@@ -180,7 +180,7 @@ git push                              # later pushes to the same branch
 
 <div align="center">
 
-<img src="temperature-and-heat/public/images/brand/mascot-wave.png" alt="Cinder waving" width="90" />
+<img src="public/images/brand/mascot-wave.png" alt="Cinder waving" width="90" />
 
 **Ignius**: Temperature and Heat, made interactive.
 
