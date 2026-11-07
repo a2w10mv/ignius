@@ -1,8 +1,20 @@
 <div align="center">
 
+<img src="temperature-and-heat/public/images/brand/calphy-logo.png" alt="Ignius logo" width="140" />
+
 # Ignius
 
 **An interactive physics learning platform for Temperature and Heat.**
+
+[![Live site](https://img.shields.io/badge/Live_site-ignius.onrender.com-ea580c?style=for-the-badge&logo=render&logoColor=white)](https://ignius.onrender.com)
+
+![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=flat-square&logo=nextdotjs)
+![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5-7952B3?style=flat-square&logo=bootstrap&logoColor=white)
+![Three.js](https://img.shields.io/badge/Three.js-3D-000000?style=flat-square&logo=threedotjs)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-optional-4169E1?style=flat-square&logo=postgresql&logoColor=white)
+
+[Introduction](#introduction) · [Features](#features) · [Installation](#installation) · [Commands](#commands) · [Contributing](#contributing) · [Tech Stack](#tech-stack)
 
 </div>
 
@@ -38,36 +50,37 @@ The course has nine lessons in four modules:
 ## Project Structure
 
 ```
-ignius/
-├── README.md                  # Project documentation
-├── app/                       # Pages and API routes
-│   ├── api/                   # Server endpoints
-│   │   ├── assistant/         #   Cinder chat assistant
-│   │   ├── auth/              #   Login, logout, register, session
-│   │   ├── progress/          #   Save and load student progress
-│   │   ├── search/            #   Site-wide search
-│   │   └── users/             #   Account details
-│   ├── dashboard/             # Progress dashboard
-│   ├── formulas/              # Formula sheet
-│   ├── learn/                 # Learning home
-│   ├── lessons/[slug]/        # Individual lesson pages
-│   ├── quizzes/[slug]/        # Individual quiz pages
-│   ├── simulations/           # Simulation gallery
-│   ├── login/  register/      # Account pages
-│   └── layout.jsx  page.jsx   # App shell and landing page
-├── components/                # Reusable interface pieces
-│   ├── simulations/           #   2D simulations
-│   └── sims/three/            #   3D simulations (Three.js)
-├── lib/                       # Course content and helpers
-│   ├── lessons.js             #   Lesson text, formulas, examples
-│   ├── quizzes.js             #   Quiz questions
-│   ├── simulations.js         #   Simulation list
-│   ├── db.js                  #   Database connection
-│   └── auth.js                #   Login sessions
-├── documentation/PostgreSQL/  # Database schema and setup notes
-├── public/                    # Images and app icons
-├── .env.example               # Template for environment settings
-└── package.json
+CALPHY_FINALS/
+├── README.md
+└── temperature-and-heat/          # The web application
+    ├── app/                       # Pages and API routes
+    │   ├── api/                   # Server endpoints
+    │   │   ├── assistant/         #   Cinder chat assistant
+    │   │   ├── auth/              #   Login, logout, register, session
+    │   │   ├── progress/          #   Save and load student progress
+    │   │   ├── search/            #   Site-wide search
+    │   │   └── users/             #   Account details
+    │   ├── dashboard/             # Progress dashboard
+    │   ├── formulas/              # Formula sheet
+    │   ├── learn/                 # Learning home
+    │   ├── lessons/[slug]/        # Individual lesson pages
+    │   ├── quizzes/[slug]/        # Individual quiz pages
+    │   ├── simulations/           # Simulation gallery
+    │   ├── login/  register/      # Account pages
+    │   └── layout.jsx  page.jsx   # App shell and landing page
+    ├── components/                # Reusable interface pieces
+    │   ├── simulations/           #   2D simulations
+    │   └── sims/three/            #   3D simulations (Three.js)
+    ├── lib/                       # Course content and helpers
+    │   ├── lessons.js             #   Lesson text, formulas, examples
+    │   ├── quizzes.js             #   Quiz questions
+    │   ├── simulations.js         #   Simulation list
+    │   ├── db.js                  #   Database connection
+    │   └── auth.js                #   Login sessions
+    ├── documentation/PostgreSQL/  # Database schema and setup notes
+    ├── public/                    # Images and app icons
+    ├── .env.example               # Template for environment settings
+    └── package.json
 ```
 
 ## Installation
@@ -82,8 +95,8 @@ ignius/
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/a2w10mv/ignius.git
-   cd ignius
+   git clone https://github.com/Arcoo-22/CALPHY_FINALS.git
+   cd CALPHY_FINALS/temperature-and-heat
    ```
 
 2. **Install dependencies**
@@ -105,13 +118,13 @@ ignius/
    | `DATABASE_URL` or `PGHOST`, `PGPORT`, `PGDATABASE`, `PGUSER`, `PGPASSWORD` | Connects to PostgreSQL for user accounts | No |
    | `SESSION_SECRET` | Secures login sessions; set a long random value | Recommended |
    | `GROQ_API_KEY` | Powers the Cinder assistant's written answers | No |
-   | `GROQ_MODEL` | Picks the assistant's model (default: `openai/gpt-oss-safeguard-20b`) | No |
+   | `GROQ_MODEL` | Picks the assistant's model (default: `openai/gpt-oss-20b`) | No |
 
    The app runs without any of these settings. Without a database, progress is saved in the browser. Without a Groq key, Cinder can still help with navigation, lesson previews, and supported calculations.
 
 4. **Set up the database (optional)**
 
-   Create a database named `db_users` with a `tbl_users` table. The table layout and setup steps are in [`documentation/PostgreSQL/`](documentation/PostgreSQL/).
+   Create a database named `db_users` with a `tbl_users` table. The table layout and setup steps are in [`temperature-and-heat/documentation/PostgreSQL/`](temperature-and-heat/documentation/PostgreSQL/).
 
 5. **Start the app**
 
@@ -123,7 +136,7 @@ ignius/
 
 ## Commands
 
-Run these from the project root:
+Run these from the `temperature-and-heat/` folder.
 
 | Command | Description |
 | --- | --- |
@@ -132,6 +145,22 @@ Run these from the project root:
 | `npm run build` | Create an optimized production build |
 | `npm start` | Run the production build |
 | `npm run lint` | Check the code for common mistakes |
+
+## Contributing
+
+Do not push directly to `main`. Create a branch for your work instead.
+
+- **Branch name format:** `[Username]-[Month/Day/Year]-[Version]`, for example `SetsuDesu17-10/5/2026-v1`
+- **Stage only what you changed:** If you edited a single file, add only that file. Use `git add .` only when your changes span several folders.
+
+```bash
+git pull                              # when switching to an existing branch
+git checkout -b [branchName]
+git add [file or folder]
+git commit -m "Describe your change"
+git push -u origin [branchName]       # first push on a new branch
+git push                              # later pushes to the same branch
+```
 
 ---
 
@@ -150,6 +179,8 @@ Run these from the project root:
 ---
 
 <div align="center">
+
+<img src="temperature-and-heat/public/images/brand/mascot-wave.png" alt="Cinder waving" width="90" />
 
 **Ignius**: Temperature and Heat, made interactive.
 
