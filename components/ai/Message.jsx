@@ -160,7 +160,7 @@ export default function Message({
 
             {/* Markdown Response Body */}
             {body ? (
-              <div className="ai-message-body ai-message-markdown assistant-markdown">
+              <div className="ai-message-body ai-message-markdown">
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm, remarkMath]}
                   rehypePlugins={[rehypeKatex]}
@@ -193,7 +193,7 @@ export default function Message({
                     table: ({ children, ...props }) => (
                       <div className="table-responsive">
                         <table
-                          className="table table-sm assistant-markdown-table ai-message-table"
+                          className="table table-sm ai-message-table"
                           {...props}
                         >
                           {children}

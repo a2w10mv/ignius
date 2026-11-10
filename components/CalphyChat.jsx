@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import CalphyMascot from "@/components/CalphyMascot";
 import { useUser } from "@/components/UserContext";
@@ -47,18 +47,25 @@ export default function CalphyChat() {
     };
   }, [open, seen, onQuiz, onLanding]);
 
+  const openChat = useCallback(() => {
+    setOpen(true);
+    setSeenBy(viewer);
+    setHint(0);
+  }, [viewer]);
+
   // other components (e.g. the landing "Ask Cinder" step) open the chat
   // by dispatching this window event
   useEffect(() => {
     const onOpen = () => openChat();
     window.addEventListener("calphy:open-chat", onOpen);
     return () => window.removeEventListener("calphy:open-chat", onOpen);
-  });
+  }, [openChat]);
 
   // In mobile view, close the chat when navigating so it does not block the redirected page
   useEffect(() => {
     if (typeof window !== "undefined" && window.innerWidth <= 768) {
-      setOpen(false);
+      const raf = requestAnimationFrame(() => setOpen(false));
+      return () => cancelAnimationFrame(raf);
     }
   }, [pathname]);
 
@@ -67,12 +74,6 @@ export default function CalphyChat() {
       setOpen(false);
     }
   };
-
-  function openChat() {
-    setOpen(true);
-    setSeenBy(viewer);
-    setHint(0);
-  }
 
   if (onQuiz) return null;
 

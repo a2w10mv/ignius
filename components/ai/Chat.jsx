@@ -313,16 +313,16 @@ export default function Chat({
 
   return (
     <section
-      className="ai-chat-panel mascot-panel"
+      className="ai-chat-panel"
       aria-label="Cinder course assistant"
       aria-live="polite"
     >
-      <header className="ai-chat-header mascot-panel-header">
+      <header className="ai-chat-header">
         <div className="ai-chat-header-mascot">
           <CalphyMascot size={38} mood={isStreaming ? "think" : "wave"} />
         </div>
         <div className="ai-chat-header-info flex-grow-1">
-          <div className="ai-chat-title m-name">Cinder Assistant</div>
+          <div className="ai-chat-title">Cinder Assistant</div>
           <ContextIndicator
             modelName="openai/gpt-oss-120b"
             isLive={!isStreaming}
@@ -330,7 +330,7 @@ export default function Chat({
         </div>
         <button
           type="button"
-          className="ai-chat-close mascot-panel-close"
+          className="ai-chat-close"
           aria-label="Close assistant"
           onClick={onClose}
         >
@@ -341,7 +341,7 @@ export default function Chat({
       <div
         ref={messagesContainerRef}
         onScroll={handleScroll}
-        className="ai-chat-messages mascot-msgs"
+        className="ai-chat-messages"
         role="log"
         aria-label="Conversation"
       >
@@ -400,7 +400,7 @@ export default function Chat({
           disabled={isStreaming}
           textareaRef={textareaRef}
         />
-        <div className="ai-chat-footnote assistant-footnote">
+        <div className="ai-chat-footnote">
           Answers stay within the lessons and tools on this site.
         </div>
       </div>
