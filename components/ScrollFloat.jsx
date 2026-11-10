@@ -4,8 +4,6 @@ import { Children, useEffect, useLayoutEffect, useMemo, useRef, useState } from 
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-import './ScrollFloat.css';
-
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
