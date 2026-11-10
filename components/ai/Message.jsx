@@ -20,15 +20,29 @@ function normalizeMathDelimiters(text) {
     .replace(/\^\\circ!?\s*([CF])/g, "{}^\\circ\\!$1");
 }
 
-function parseMessageContent(rawContent, isStreaming, explicitReasoning) {
+function parseMessageContent(
+  rawContent,
+  isStreaming,
+  explicitReasoning,
+  isUser = false
+) {
   let thought = explicitReasoning || "";
   let body = rawContent || "";
   let isReasoningStreaming = false;
 
+  // Safeguard 2: If isUser, skip <think> parsing entirely so user content with <think> is not lost
+  if (isUser) {
+    return { thought: "", body: rawContent || "", isReasoningStreaming: false };
+  }
+
   if (rawContent && typeof rawContent === "string") {
     const lower = rawContent.toLowerCase();
     const thinkStartIndex = lower.indexOf("<think>");
-    const thinkEndIndex = lower.indexOf("</think>");
+    // Safeguard 1: search starting from thinkStartIndex + 7 to prevent backwards slice
+    const thinkEndIndex =
+      thinkStartIndex !== -1
+        ? lower.indexOf("</think>", thinkStartIndex + 7)
+        : -1;
 
     if (thinkStartIndex !== -1) {
       if (thinkEndIndex !== -1) {
@@ -78,13 +92,14 @@ export default function Message({
   const rawContent = rawContentProp ?? rawTextProp ?? "";
   const [copied, setCopied] = useState(false);
 
+  const isUser = role === "user";
+
   const { thought, body, isReasoningStreaming } = parseMessageContent(
     rawContent,
     isStreaming,
-    explicitReasoning
+    explicitReasoning,
+    isUser
   );
-
-  const isUser = role === "user";
 
   const handleCopy = async () => {
     if (!body) return;

@@ -5,3 +5,4 @@ export { default as Suggestion } from "./Suggestion";
 export { default as ContextIndicator } from "./ContextIndicator";
 export { default as PromptInput } from "./PromptInput";
 export { default as Message } from "./Message";
+export { default as Chat } from "./Chat";
