@@ -56,9 +56,8 @@ export default function CalphyChat() {
   // other components (e.g. the landing "Ask Cinder" step) open the chat
   // by dispatching this window event
   useEffect(() => {
-    const onOpen = () => openChat();
-    window.addEventListener("calphy:open-chat", onOpen);
-    return () => window.removeEventListener("calphy:open-chat", onOpen);
+    window.addEventListener("calphy:open-chat", openChat);
+    return () => window.removeEventListener("calphy:open-chat", openChat);
   }, [openChat]);
 
   // In mobile view, close the chat when navigating so it does not block the redirected page

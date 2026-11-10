@@ -3766,16 +3766,6 @@ a.continue-card:hover {
   }
 }
 
-@keyframes mascot-panel-in {
-  from {
-    opacity: 0;
-    transform: translateY(18px) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
 
 .ai-chat-header {
   display: flex;
@@ -3903,49 +3893,6 @@ a.continue-card:hover {
   user-select: none;
 }
 
-/* Mobile Responsive Polish */
-@media (max-width: 576px) {
-  .ai-chat-panel {
-    right: 0.5rem;
-    bottom: 0.5rem;
-    width: calc(100vw - 1rem);
-    height: calc(100dvh - 1rem);
-    max-height: calc(100dvh - 1rem);
-    border-radius: var(--radius-card);
-  }
-
-  .ai-chat-close {
-    width: 44px;
-    height: 44px;
-  }
-
-  .ai-prompt-btn {
-    min-height: 44px;
-    min-width: 44px;
-  }
-
-  .ai-confirmation-btn {
-    min-height: 44px;
-    padding: 0.5rem 1rem;
-  }
-
-  .ai-suggestion-pill {
-    min-height: 44px;
-    padding: 0.5rem 0.85rem;
-  }
-
-  .ai-message-action-btn {
-    min-height: 44px;
-    padding: 0.4rem 0.65rem;
-  }
-
-  .ai-chat-scroll-bottom {
-    width: 44px;
-    height: 44px;
-    bottom: 10.75rem;
-    right: 1rem;
-  }
-}
 
 
 /* squishy: held = squashed flat from the base, wobble runs from JS */
@@ -4512,7 +4459,6 @@ a.check-dot.current:hover {
     font-size: 0.74rem;
   }
 
-  .mascot-panel,
   .ai-chat-panel {
     top: max(0.5rem, env(safe-area-inset-top));
     left: 0.5rem;
@@ -4521,6 +4467,39 @@ a.check-dot.current:hover {
     width: auto;
     height: auto;
     max-height: none;
+    border-radius: var(--radius-card);
+  }
+
+  .ai-chat-close {
+    width: 44px;
+    height: 44px;
+  }
+
+  .ai-prompt-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .ai-confirmation-btn {
+    min-height: 44px;
+    padding: 0.5rem 1rem;
+  }
+
+  .ai-suggestion-pill {
+    min-height: 44px;
+    padding: 0.5rem 0.85rem;
+  }
+
+  .ai-message-action-btn {
+    min-height: 44px;
+    padding: 0.4rem 0.65rem;
+  }
+
+  .ai-chat-scroll-bottom {
+    width: 44px;
+    height: 44px;
+    bottom: 10.75rem;
+    right: 1rem;
   }
 
   .progress-thin {
@@ -4529,7 +4508,6 @@ a.check-dot.current:hover {
 }
 
 @media (max-height: 480px) and (min-width: 576px) {
-  .mascot-panel,
   .ai-chat-panel {
     bottom: 0.5rem;
     height: calc(100dvh - 1rem);
