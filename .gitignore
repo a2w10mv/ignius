@@ -30,7 +30,7 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files
+# env files (can opt-in for committing if needed)
 .env*
 !.env.example
 
@@ -50,6 +50,7 @@ anti-slop/
 AGENTS.md
 DESIGN.md
 CLAUDE.md
+*mcp/
 
 # editor and OS files
 .vscode/
@@ -57,3 +58,4 @@ CLAUDE.md
 
 # logs
 *.log
+

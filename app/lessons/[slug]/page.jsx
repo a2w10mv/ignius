@@ -7,6 +7,7 @@ import FormulaCard from "@/components/FormulaCard";
 import MiniQuiz from "@/components/MiniQuiz";
 import SimHost from "@/components/SimHost";
 import VideoEmbed from "@/components/VideoEmbed";
+import ScrollFloat from "@/components/ScrollFloat";
 import { LessonTracker, MarkCompleteButton } from "@/components/LessonProgress";
 import { PASS_PERCENT } from "@/lib/quizzes";
 
@@ -134,11 +135,11 @@ export default async function LessonPage({ params }) {
                 className="fw-bold mb-2"
                 style={{ fontSize: "clamp(1.9rem, 4vw, 3rem)" }}
               >
-                <span className="gradient-text">Lesson {lesson.n}.</span>{" "}
+                <span className="text-cool">Lesson {lesson.n}.</span>{" "}
                 {lesson.title}
               </h1>
               <p className="section-sub mb-3">{lesson.tagline}</p>
-              <MarkCompleteButton lessonKey={lesson.key} />
+              <MarkCompleteButton lessonKey={lesson.key} compact />
             </Col>
             <Col lg={4}>
               <nav className="card-soft flat p-3" aria-label="Trace the energy">
@@ -339,12 +340,22 @@ export default async function LessonPage({ params }) {
       <section className="section-tight">
         <Container>
           <Reveal>
-            <h2 className="fw-bold h4 mb-3">
+            <h2 className="fw-bold h4 mb-3 d-flex align-items-center">
               <i
                 className="bi bi-pencil-square me-2"
                 style={{ color: "var(--ember-text)" }}
               />
-              Worked examples
+              <ScrollFloat
+                as="span"
+                effect="float"
+                animationDuration={0.8}
+                stagger={0.02}
+                distance={50}
+                scrollStart="top bottom-=10%"
+                scrollEnd="bottom center+=20%"
+              >
+                Worked examples
+              </ScrollFloat>
             </h2>
           </Reveal>
           <Row className="g-3">

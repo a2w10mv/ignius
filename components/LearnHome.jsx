@@ -11,6 +11,7 @@ import QuizCards from "@/components/QuizCards";
 import CalphyMascot from "@/components/CalphyMascot";
 import CalphyStage from "@/components/CalphyStage";
 import SectionHead from "@/components/SectionHead";
+import ScrollFloat from "@/components/ScrollFloat";
 import VideoEmbed from "@/components/VideoEmbed";
 import { LESSONS, UNITS } from "@/lib/lessons";
 import { QUIZZES } from "@/lib/quizzes";
@@ -53,7 +54,8 @@ export default function LearnHome() {
               : "Physics · Thermal physics"}
           </span>
           <h1 className="section-title learn-intro-title mb-2">
-            Temperature <span className="gradient-text">&amp; Heat</span>
+            <span className="text-cool">Temperature</span> &amp;{" "}
+            <span className="text-flame">Heat</span>
           </h1>
           <p className="learn-intro-sub mb-3">
             From thermometer scales to gas laws. Each lesson pairs a short read
@@ -88,7 +90,7 @@ export default function LearnHome() {
       {current ? (
         <Link
           href={`/lessons/${current.slug}`}
-          className="continue-card card-soft flat mb-4"
+          className="continue-card card-soft flat mb-3"
         >
           <span className="icon-tile" aria-hidden="true">
             <i className={`bi ${current.icon}`} />
@@ -102,7 +104,7 @@ export default function LearnHome() {
           <i className="bi bi-arrow-right continue-arrow" aria-hidden="true" />
         </Link>
       ) : (
-        <div className="continue-card card-soft flat mb-4">
+        <div className="continue-card card-soft flat mb-3">
           <span className="icon-tile" aria-hidden="true">
             <i className="bi bi-check2-all" />
           </span>
@@ -122,10 +124,14 @@ export default function LearnHome() {
           icon="bi-signpost-split"
           tag="Browse by unit"
           title={
-            <>
-              {UNITS.length} units.{" "}
-              <span className="gradient-text">One warm story.</span>
-            </>
+            <ScrollFloat
+              as="span"
+              effect="float"
+              distance={40}
+              animationDuration={0.8}
+            >
+              4 units. One warm story.
+            </ScrollFloat>
           }
           sub="Each unit builds on the last: what temperature is, how heat moves, how to count it, and what gases do when they get hot."
           actions={
@@ -149,9 +155,14 @@ export default function LearnHome() {
           icon="bi-patch-question"
           tag="Check yourself"
           title={
-            <>
-              Quizzes that <span className="gradient-text">save your score</span>
-            </>
+            <ScrollFloat
+              as="span"
+              effect="float"
+              distance={40}
+              animationDuration={0.8}
+            >
+              Quizzes that save your score
+            </ScrollFloat>
           }
           sub="See the explanation after every answer. Your best score per quiz is kept on your dashboard."
           actions={
@@ -170,7 +181,7 @@ export default function LearnHome() {
           tag="Watch & learn"
           title={
             <>
-              See heat move in <span className="gradient-text">5 minutes</span>
+              See heat move in <span className="text-cool">5 minutes</span>
             </>
           }
           sub="A short visual intro to conduction, convection and radiation. Every lesson ends with its own video."
@@ -180,7 +191,7 @@ export default function LearnHome() {
             <div className="learn-mascot-body">
               <CalphyMascot size={104} />
               <h3 className="fw-bold h5 mb-1 mt-2">
-                Meet <span className="gradient-text">Cinder</span>
+                Meet <span className="text-flame">Cinder</span>
               </h3>
               <p className="mb-0">
                 Your flame study buddy. Cinder shows up in lessons and quizzes

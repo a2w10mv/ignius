@@ -42,7 +42,7 @@ The course has nine lessons in four modules:
 - **Cinder assistant**: A chat helper that answers questions using the course material, links to the relevant page, and works through supported calculations.
 - **Progress dashboard**: Shows which lessons are finished, which are in progress, and how you did on quizzes.
 - **Accounts or guest mode**: Students can sign up so their progress is saved to their account, or use the app as a guest and keep progress in the browser.
-- **Site search**: Find any lesson, simulation, quiz, or formula from the navigation bar.
+- **Proponents page**: Project team presentation and course details.
 - **Mobile friendly**: Works on phones and tablets, and can be installed on the home screen like an app.
 
 ---
@@ -50,37 +50,34 @@ The course has nine lessons in four modules:
 ## Project Structure
 
 ```
-CALPHY_FINALS/
-├── README.md
-└── temperature-and-heat/          # The web application
-    ├── app/                       # Pages and API routes
-    │   ├── api/                   # Server endpoints
-    │   │   ├── assistant/         #   Cinder chat assistant
-    │   │   ├── auth/              #   Login, logout, register, session
-    │   │   ├── progress/          #   Save and load student progress
-    │   │   ├── search/            #   Site-wide search
-    │   │   └── users/             #   Account details
-    │   ├── dashboard/             # Progress dashboard
-    │   ├── formulas/              # Formula sheet
-    │   ├── learn/                 # Learning home
-    │   ├── lessons/[slug]/        # Individual lesson pages
-    │   ├── quizzes/[slug]/        # Individual quiz pages
-    │   ├── simulations/           # Simulation gallery
-    │   ├── login/  register/      # Account pages
-    │   └── layout.jsx  page.jsx   # App shell and landing page
-    ├── components/                # Reusable interface pieces
-    │   ├── simulations/           #   2D simulations
-    │   └── sims/three/            #   3D simulations (Three.js)
-    ├── lib/                       # Course content and helpers
-    │   ├── lessons.js             #   Lesson text, formulas, examples
-    │   ├── quizzes.js             #   Quiz questions
-    │   ├── simulations.js         #   Simulation list
-    │   ├── db.js                  #   Database connection
-    │   └── auth.js                #   Login sessions
-    ├── documentation/PostgreSQL/  # Database schema and setup notes
-    ├── public/                    # Images and app icons
-    ├── .env.example               # Template for environment settings
-    └── package.json
+ignius/
+├── docs/database/                 # Database schema and setup notes
+├── app/                           # Pages and API routes
+│   ├── api/                       # Server endpoints
+│   │   ├── assistant/             #   Cinder chat assistant
+│   │   ├── auth/                  #   Login, logout, register, session
+│   │   └── progress/              #   Save and load student progress
+│   ├── dashboard/                 # Progress dashboard
+│   ├── formulas/                  # Formula sheet
+│   ├── learn/                     # Learning home
+│   ├── lessons/[slug]/        # Individual lesson pages
+│   ├── proponents/                # Project team
+│   ├── quizzes/[slug]/            # Individual quiz pages
+│   ├── simulations/               # Simulation gallery
+│   ├── login/  register/          # Account pages
+│   └── layout.jsx  page.jsx       # App shell and landing page
+├── components/                    # Reusable interface pieces
+│   ├── simulations/               #   2D simulations
+│   └── sims/three/                #   3D simulations (Three.js)
+├── lib/                           # Course content and helpers
+│   ├── lessons.js                 #   Lesson text, formulas, examples
+│   ├── quizzes.js                 #   Quiz questions
+│   ├── simulations.js             #   Simulation list
+│   ├── db.js                      #   Database connection
+│   └── auth.js                    #   Login sessions
+├── public/                        # Images and app icons
+├── .env.example                   # Template for environment settings
+└── package.json
 ```
 
 ## Installation
@@ -95,8 +92,8 @@ CALPHY_FINALS/
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/Arcoo-22/CALPHY_FINALS.git
-   cd CALPHY_FINALS/temperature-and-heat
+   git clone https://github.com/a2w10mv/ignius.git
+   cd ignius
    ```
 
 2. **Install dependencies**
@@ -124,7 +121,7 @@ CALPHY_FINALS/
 
 4. **Set up the database (optional)**
 
-   Create a database named `db_users` with a `tbl_users` table. The table layout and setup steps are in [`temperature-and-heat/documentation/PostgreSQL/`](temperature-and-heat/documentation/PostgreSQL/).
+   Create a database named `db_users` with a `tbl_users` table. The table layout and setup steps are in [`docs/database/`](docs/database/).
 
 5. **Start the app**
 
@@ -136,7 +133,7 @@ CALPHY_FINALS/
 
 ## Commands
 
-Run these from the `temperature-and-heat/` folder.
+Run these from the repository root.
 
 | Command | Description |
 | --- | --- |
@@ -150,7 +147,7 @@ Run these from the `temperature-and-heat/` folder.
 
 Do not push directly to `main`. Create a branch for your work instead.
 
-- **Branch name format:** `[Username]-[Month/Day/Year]-[Version]`, for example `SetsuDesu17-10/5/2026-v1`
+- **Branch name format:** `[Username]-[Month/Day/Year]-[Version]`, for example `a2w10mv-11/10/2026-v1`
 - **Stage only what you changed:** If you edited a single file, add only that file. Use `git add .` only when your changes span several folders.
 
 ```bash
@@ -169,7 +166,7 @@ git push                              # later pushes to the same branch
 | Area | Tools |
 | --- | --- |
 | Framework | [Next.js 16](https://nextjs.org) with [React 19](https://react.dev) |
-| Styling | [Bootstrap 5](https://getbootstrap.com), [React Bootstrap](https://react-bootstrap.github.io), [Tailwind CSS 4](https://tailwindcss.com), Bootstrap Icons |
+| Styling | [Bootstrap 5](https://getbootstrap.com), [React Bootstrap](https://react-bootstrap.github.io), Bootstrap Icons |
 | 3D graphics | [Three.js](https://threejs.org) |
 | Math display | [KaTeX](https://katex.org) with React Markdown |
 | Database | [PostgreSQL](https://www.postgresql.org) via `node-postgres` |
