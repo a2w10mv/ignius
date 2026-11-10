@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Reasoning({
   content = "",
@@ -8,6 +8,14 @@ export default function Reasoning({
   defaultOpen = false,
 }) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
+  const wasStreamingRef = useRef(isStreaming);
+
+  useEffect(() => {
+    if (wasStreamingRef.current && !isStreaming) {
+      setIsOpen(false);
+    }
+    wasStreamingRef.current = isStreaming;
+  }, [isStreaming]);
 
   if (!content && !isStreaming) {
     return null;

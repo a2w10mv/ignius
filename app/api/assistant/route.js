@@ -184,7 +184,12 @@ export async function POST(request) {
       .slice(-10)
       .map((message) => ({
         role: message.role,
-        content: stripReasoning(message.content).trim().slice(0, 1200),
+        content: (message.role === "assistant"
+          ? stripReasoning(message.content)
+          : message.content
+        )
+          .trim()
+          .slice(0, 1200),
       }));
 
     const latest = conversation.at(-1);
@@ -467,80 +472,89 @@ export async function POST(request) {
             handleChunk("</think>");
           }
 
-          if (!fullAnswer.trim()) {
-            const fallback = responseWithFallback(
-              question,
-              matches,
-              "unavailable",
-            );
-            controller.enqueue(
-              encoder.encode(
-                formatSSE({ type: "chunk", text: fallback.answer }),
-              ),
-            );
-            controller.enqueue(
-              encoder.encode(
-                formatSSE({
-                  type: "done",
-                  sources: fallback.sources || [],
-                  suggestions: getSuggestions(matches, question),
-                }),
-              ),
-            );
-          } else {
-            const cleanAnswer = stripReasoning(fullAnswer) || fullAnswer;
-            const sources = selectSourcesForAnswer(
-              cleanAnswer,
-              matches,
-              question,
-            );
-            const suggestions = getSuggestions(matches, question);
-            controller.enqueue(
-              encoder.encode(
-                formatSSE({
-                  type: "done",
-                  sources,
-                  suggestions,
-                }),
-              ),
-            );
+          try {
+            if (!fullAnswer.trim()) {
+              const fallback = responseWithFallback(
+                question,
+                matches,
+                "unavailable",
+              );
+              controller.enqueue(
+                encoder.encode(
+                  formatSSE({ type: "chunk", text: fallback.answer }),
+                ),
+              );
+              controller.enqueue(
+                encoder.encode(
+                  formatSSE({
+                    type: "done",
+                    sources: fallback.sources || [],
+                    suggestions: getSuggestions(matches, question),
+                  }),
+                ),
+              );
+            } else {
+              const cleanAnswer = stripReasoning(fullAnswer) || fullAnswer;
+              const sources = selectSourcesForAnswer(
+                cleanAnswer,
+                matches,
+                question,
+              );
+              const suggestions = getSuggestions(matches, question);
+              controller.enqueue(
+                encoder.encode(
+                  formatSSE({
+                    type: "done",
+                    sources,
+                    suggestions,
+                  }),
+                ),
+              );
+            }
+            controller.close();
+          } catch {
+            // Stream may already be closed if the client disconnected
           }
-          controller.close();
         } catch (err) {
           console.error("Error while streaming Groq response:", err);
-          if (!fullAnswer.trim()) {
-            const fallback = responseWithFallback(
-              question,
-              matches,
-              "unavailable",
-            );
-            controller.enqueue(
-              encoder.encode(
-                formatSSE({ type: "chunk", text: fallback.answer }),
-              ),
-            );
-            controller.enqueue(
-              encoder.encode(
-                formatSSE({
-                  type: "done",
-                  sources: fallback.sources || [],
-                  suggestions: getSuggestions(matches, question),
-                }),
-              ),
-            );
-          } else {
-            controller.enqueue(
-              encoder.encode(
-                formatSSE({ type: "error", error: "Stream interrupted." }),
-              ),
-            );
+          try {
+            if (!fullAnswer.trim()) {
+              const fallback = responseWithFallback(
+                question,
+                matches,
+                "unavailable",
+              );
+              controller.enqueue(
+                encoder.encode(
+                  formatSSE({ type: "chunk", text: fallback.answer }),
+                ),
+              );
+              controller.enqueue(
+                encoder.encode(
+                  formatSSE({
+                    type: "done",
+                    sources: fallback.sources || [],
+                    suggestions: getSuggestions(matches, question),
+                  }),
+                ),
+              );
+            } else {
+              controller.enqueue(
+                encoder.encode(
+                  formatSSE({ type: "error", error: "Stream interrupted." }),
+                ),
+              );
+            }
+            controller.close();
+          } catch {
+            // Defensive catch: stream controller may already be closed or errored
           }
-          controller.close();
         } finally {
           reader.releaseLock();
         }
       },
       cancel() {
+        groqController.abort();
         completion.body?.cancel();
       },
     });
