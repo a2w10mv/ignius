@@ -65,7 +65,7 @@ export default function SiteNavbar() {
     >
       <Container>
         <Navbar.Brand as={Link} href="/welcome" onClick={() => setExpanded(false)}>
-          <CalphyMascot size={28} />
+          <CalphyMascot size={24} />
           <span>Ignius</span>
         </Navbar.Brand>
 
@@ -76,7 +76,7 @@ export default function SiteNavbar() {
           className="calphy-toggler border-0 shadow-none d-xl-none"
         >
           <i
-            className={`bi ${expanded ? "bi-x-lg" : "bi-list"}`}
+            className={`bi ${expanded ? "bi-x" : "bi-list"}`}
             aria-hidden="true"
           />
         </Navbar.Toggle>
@@ -100,33 +100,33 @@ export default function SiteNavbar() {
 
           <div className="nav-actions d-flex align-items-center gap-2 ms-xl-3 mt-3 mt-xl-0">
             <SiteSearch onNavigate={() => setExpanded(false)} />
-            <button type="button" className="theme-toggle" onClick={toggleTheme} aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}>
-              <i className={`bi ${theme === "dark" ? "bi-sun" : "bi-moon-stars"}`} aria-hidden="true" />
+            <button
+              type="button"
+              className="theme-toggle"
+              onClick={toggleTheme}
+              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+            >
+              <i
+                className={`bi ${theme === "dark" ? "bi-sun" : "bi-moon-stars"}`}
+                aria-hidden="true"
+              />
             </button>
             {authLoading ? (
-              <span className="chip">
-                <span className="spinner-border spinner-border-sm me-1" />{" "}
-                loading…
+              <span className="nav-loading-pill">
+                <span className="spinner-border spinner-border-sm me-1" />
               </span>
             ) : isLoggedIn ? (
               <Dropdown align="end">
                 <Dropdown.Toggle
                   as="button"
-                  className="btn chip d-inline-flex align-items-center gap-2 border-0 py-2"
+                  className="nav-user-chip border-0"
                   style={{ cursor: "pointer" }}
                 >
-                  <span
-                    className="rounded-circle d-inline-flex align-items-center justify-content-center text-white fw-bold"
-                    style={{
-                      width: 26,
-                      height: 26,
-                      background: "var(--ember)",
-                      fontSize: "0.8rem",
-                    }}
-                  >
+                  <span className="nav-avatar rounded-circle d-inline-flex align-items-center justify-content-center">
                     {user.username[0].toUpperCase()}
                   </span>
-                  {user.username}
+                  <span className="nav-username">{user.username}</span>
+                  <i className="bi bi-chevron-down nav-user-caret" />
                 </Dropdown.Toggle>
                 <Dropdown.Menu className="shadow border-1">
                   <Dropdown.Item
@@ -145,16 +145,16 @@ export default function SiteNavbar() {
             ) : (
               <Link
                 href="/login"
-                className="btn btn-flame btn-sm py-2 px-3"
+                className="btn btn-flame btn-sm nav-login-btn"
                 onClick={() => setExpanded(false)}
               >
-                <i className="bi bi-person-circle me-1" /> Log in
+                <i className="bi bi-person me-1" /> Log in
               </Link>
             )}
             {!/^\/quizzes\/[^/]+/.test(pathname || "") && (
               <button
                 type="button"
-                className="theme-toggle cinder-nav-trigger"
+                className="cinder-nav-trigger"
                 onClick={() => {
                   setExpanded(false);
                   window.dispatchEvent(new CustomEvent("calphy:toggle-chat"));
@@ -162,7 +162,8 @@ export default function SiteNavbar() {
                 title="Open Cinder AI Assistant"
                 aria-label="Toggle Cinder AI Assistant"
               >
-                <CalphyMascot size={24} />
+                <CalphyMascot size={20} />
+                <span className="cinder-status-dot" />
               </button>
             )}
           </div>
