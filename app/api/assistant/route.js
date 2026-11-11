@@ -9,6 +9,7 @@ import {
   resolveLocalAction,
   selectSourcesForAnswer,
 } from "@/lib/assistant";
+import { getSession } from "@/lib/auth";
 
 export const runtime = "nodejs";
 
@@ -292,6 +293,14 @@ function createErrorStreamResponse(errorMessage, status = 500) {
 
 export async function POST(request) {
   try {
+    const session = await getSession();
+    if (!session?.id) {
+      return createErrorStreamResponse(
+        "Please log in to chat with Cinder.",
+        401,
+      );
+    }
+
     let body;
     try {
       body = await request.json();

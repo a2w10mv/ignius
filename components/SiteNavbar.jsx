@@ -100,18 +100,6 @@ export default function SiteNavbar() {
 
           <div className="nav-actions d-flex align-items-center gap-2 ms-xl-3 mt-3 mt-xl-0">
             <SiteSearch onNavigate={() => setExpanded(false)} />
-            <button
-              type="button"
-              className="theme-toggle"
-              onClick={() => {
-                setExpanded(false);
-                window.dispatchEvent(new CustomEvent("calphy:toggle-chat"));
-              }}
-              title="Toggle Cinder AI Sidebar"
-              aria-label="Toggle Cinder AI Sidebar"
-            >
-              <i className="bi bi-layout-sidebar-inset-reverse" aria-hidden="true" />
-            </button>
             <button type="button" className="theme-toggle" onClick={toggleTheme} aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}>
               <i className={`bi ${theme === "dark" ? "bi-sun" : "bi-moon-stars"}`} aria-hidden="true" />
             </button>
@@ -162,6 +150,20 @@ export default function SiteNavbar() {
               >
                 <i className="bi bi-person-circle me-1" /> Log in
               </Link>
+            )}
+            {!/^\/quizzes\/[^/]+/.test(pathname || "") && (
+              <button
+                type="button"
+                className="theme-toggle cinder-nav-trigger"
+                onClick={() => {
+                  setExpanded(false);
+                  window.dispatchEvent(new CustomEvent("calphy:toggle-chat"));
+                }}
+                title="Open Cinder AI Assistant"
+                aria-label="Toggle Cinder AI Assistant"
+              >
+                <CalphyMascot size={24} />
+              </button>
             )}
           </div>
         </Navbar.Collapse>
