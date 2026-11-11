@@ -322,11 +322,8 @@ export default function Chat({
           <CalphyMascot size={38} mood={isStreaming ? "think" : "wave"} />
         </div>
         <div className="ai-chat-header-info flex-grow-1">
-          <div className="ai-chat-title">Cinder Assistant</div>
-          <ContextIndicator
-            modelName="openai/gpt-oss-120b"
-            isLive={!isStreaming}
-          />
+          <div className="ai-chat-title">Cinder</div>
+          <ContextIndicator isLive={!isStreaming} />
         </div>
         <button
           type="button"

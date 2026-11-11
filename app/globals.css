@@ -3304,6 +3304,12 @@ a.continue-card:hover {
   box-shadow: 0 0 8px #22c55e;
 }
 
+.ai-context-label {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 0.01em;
+}
+
 .ai-context-model {
   font-family: var(--font-mono);
   font-weight: 700;
