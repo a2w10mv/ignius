@@ -70,6 +70,7 @@ export default function SiteSearch({ onNavigate }) {
         className="nav-search-trigger"
         onClick={() => setOpen(true)}
         aria-label="Search lessons, simulations, quizzes and formulas"
+        data-tooltip="Search lessons, quizzes & formulas (/)"
         aria-keyshortcuts="Control+K Meta+K /"
       >
         <i className="bi bi-search" aria-hidden="true" />

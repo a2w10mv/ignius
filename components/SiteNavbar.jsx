@@ -186,6 +186,7 @@ export default function SiteNavbar() {
                 className="theme-toggle"
                 onClick={toggleTheme}
                 aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+                data-tooltip={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
               >
                 <i
                   className={`bi ${theme === "dark" ? "bi-sun" : "bi-moon-stars"}`}
@@ -202,6 +203,7 @@ export default function SiteNavbar() {
                     as="button"
                     className="nav-user-chip"
                     style={{ cursor: "pointer" }}
+                    data-tooltip="Account menu"
                   >
                     <span className="nav-avatar rounded-circle d-inline-flex align-items-center justify-content-center">
                       {user.username[0].toUpperCase()}
@@ -226,8 +228,9 @@ export default function SiteNavbar() {
               ) : (
                 <Link
                   href="/login"
-                  className="btn btn-flame btn-sm nav-login-btn"
+                  className="nav-login-btn"
                   onClick={() => setExpanded(false)}
+                  data-tooltip="Sign in to your account"
                 >
                   <i className="bi bi-person me-1" /> Log in
                 </Link>
@@ -237,8 +240,8 @@ export default function SiteNavbar() {
                   type="button"
                   className="cinder-nav-trigger"
                   onClick={handleCinderClick}
-                  title="Open Cinder AI Assistant"
-                  aria-label="Toggle Cinder AI Assistant"
+                  aria-label="Ask Cinder AI Assistant"
+                  data-tooltip="Ask Cinder AI Assistant"
                 >
                   <CalphyMascot size={20} />
                   {showCinderDot && <span className="cinder-status-dot" />}
