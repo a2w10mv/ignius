@@ -734,38 +734,64 @@ a,
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
   height: 36px !important;
   min-height: 36px !important;
   max-height: 36px !important;
   box-sizing: border-box;
-  padding: 0 0.85rem;
+  padding: 0 0.95rem;
   border-radius: 8px;
   border: 1px solid transparent;
   background: var(--ember);
   color: #ffffff !important;
   font-size: 0.82rem;
   font-weight: 600;
-  line-height: 1;
+  line-height: normal;
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
+  text-align: center;
   transition:
     background-color 140ms ease,
     border-color 140ms ease,
-    transform 140ms var(--ease-out),
-    box-shadow 140ms ease;
+    transform 140ms var(--ease-out);
 }
 
 .nav-login-btn:hover {
-  background: var(--ember-glow);
+  background: var(--ember-hover);
   color: #ffffff !important;
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.28);
+  box-shadow: none !important;
+}
+
+.nav-login-btn:focus-visible {
+  outline: 2px solid var(--ember);
+  outline-offset: 2px;
+  box-shadow: none !important;
 }
 
 .nav-login-btn:active {
   transform: translateY(0) scale(0.98);
+  box-shadow: none !important;
+}
+
+.component-arrow {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  transition: transform 160ms var(--ease-out);
+}
+
+.btn:hover .component-arrow,
+.dash-sync-link:hover .component-arrow {
+  transform: translateX(3px);
+}
+
+.dash-sync-link {
+  transition: color 140ms ease, opacity 140ms ease;
+}
+
+.dash-sync-link:hover {
+  color: var(--ember-hover) !important;
 }
 
 .nav-loading-pill {

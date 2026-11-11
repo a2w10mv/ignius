@@ -232,7 +232,7 @@ export default function SiteNavbar() {
                   onClick={() => setExpanded(false)}
                   data-tooltip="Sign in to your account"
                 >
-                  <i className="bi bi-person me-1" /> Log in
+                  Log in
                 </Link>
               )}
               {!/^\/quizzes\/[^/]+/.test(pathname || "") && (

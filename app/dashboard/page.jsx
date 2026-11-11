@@ -13,6 +13,7 @@ import { useUser } from "@/components/UserContext";
 import ProgressRing from "@/components/ProgressRing";
 import CalphyMascot from "@/components/CalphyMascot";
 import Reveal from "@/components/Reveal";
+import ArrowRight from "@/components/ArrowRight";
 import { LESSONS, UNITS } from "@/lib/lessons";
 import { QUIZZES, quizLabel } from "@/lib/quizzes";
 import {
@@ -107,7 +108,7 @@ export default function DashboardPage() {
         title: `Lesson ${nextLesson.n}: ${nextLesson.title}`,
         subtitle: nextLesson.tagline,
         url: `/lessons/${nextLesson.slug}`,
-        btnText: st === "Current" ? "Resume Lesson →" : "Start Lesson →",
+        btnText: st === "Current" ? "Resume Lesson" : "Start Lesson",
       };
     }
 
@@ -120,7 +121,7 @@ export default function DashboardPage() {
         title: "Comprehensive Final Exam",
         subtitle: "9 units covered. Complete the final challenge to unlock full mastery.",
         url: `/quizzes/${finalExam.slug}`,
-        btnText: "Take Final Exam →",
+        btnText: "Take Final Exam",
       };
     }
 
@@ -131,7 +132,7 @@ export default function DashboardPage() {
       title: "All Modules Mastered!",
       subtitle: "You've finished every lesson and passed all quizzes.",
       url: "/simulations",
-      btnText: "Explore 3D Labs →",
+      btnText: "Explore 3D Labs",
     };
   }, [progress, finalExam]);
 
@@ -241,10 +242,11 @@ export default function DashboardPage() {
                           ) : (
                             <Link
                               href="/login"
-                              className="small fw-semibold text-decoration-none"
+                              className="small fw-semibold text-decoration-none dash-sync-link d-inline-flex align-items-center gap-1"
                               style={{ color: "var(--ember)" }}
                             >
-                              Sign in to sync →
+                              <span>Sign in to sync</span>
+                              <ArrowRight size={13} />
                             </Link>
                           )}
                         </div>
@@ -265,8 +267,12 @@ export default function DashboardPage() {
                           {nextUp.subtitle}
                         </p>
                       </div>
-                      <Link href={nextUp.url} className="btn btn-flame btn-sm text-nowrap">
-                        {nextUp.btnText}
+                      <Link
+                        href={nextUp.url}
+                        className="btn btn-flame btn-sm text-nowrap d-inline-flex align-items-center gap-1.5"
+                      >
+                        <span>{nextUp.btnText}</span>
+                        <ArrowRight size={14} />
                       </Link>
                     </div>
                   </div>
@@ -593,11 +599,16 @@ export default function DashboardPage() {
                         )}
                         <Link
                           href={`/quizzes/${finalExam.slug}`}
-                          className="btn btn-outline-ink btn-sm text-nowrap"
+                          className="btn btn-outline-ink btn-sm text-nowrap d-inline-flex align-items-center gap-1.5"
                         >
-                          {quizStatus(progress, finalExam.id) === "Finished"
-                            ? "Retake Exam"
-                            : "Launch Exam →"}
+                          <span>
+                            {quizStatus(progress, finalExam.id) === "Finished"
+                              ? "Retake Exam"
+                              : "Launch Exam"}
+                          </span>
+                          {quizStatus(progress, finalExam.id) !== "Finished" && (
+                            <ArrowRight size={13} />
+                          )}
                         </Link>
                       </div>
                     )}
