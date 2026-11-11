@@ -557,7 +557,7 @@ a,
 
 .calphy-nav .nav-link:hover {
   color: var(--ink);
-  background: color-mix(in srgb, var(--surface-2) 60%, transparent);
+  background: transparent;
 }
 
 .calphy-nav .nav-link.active {
@@ -567,7 +567,7 @@ a,
 }
 
 @media (min-width: 992px) {
-  .calphy-nav .nav-link.active::after {
+  .calphy-nav .navbar-nav:not([data-has-indicator="true"]) .nav-link.active::after {
     content: "";
     position: absolute;
     left: 0.7rem;
@@ -576,6 +576,20 @@ a,
     height: 2px;
     border-radius: 2px;
     background: var(--ember);
+  }
+
+  .nav-underline-indicator {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--ember);
+    pointer-events: none;
+    transition:
+      transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      width 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      opacity 150ms ease;
   }
 }
 
@@ -4669,6 +4683,18 @@ a.check-dot.current:hover {
     border-radius: 8px;
     border: 1px solid var(--line);
     background: var(--surface);
+  }
+
+  .calphy-nav .nav-bottom-row .dropdown {
+    position: relative;
+  }
+
+  .calphy-nav .nav-bottom-row .dropdown-menu {
+    position: absolute !important;
+    inset: calc(100% + 6px) auto auto 0 !important;
+    transform: none !important;
+    min-width: 11rem;
+    z-index: 1060;
   }
 
   .calphy-nav .nav-bottom-row .theme-toggle,

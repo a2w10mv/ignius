@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Container, Dropdown, Nav, Navbar } from "react-bootstrap";
@@ -25,6 +25,39 @@ export default function SiteNavbar() {
   const [expanded, setExpanded] = useState(false);
   const [theme, setTheme] = useState(null);
   const [showCinderDot, setShowCinderDot] = useState(false);
+  const navRef = useRef(null);
+  const [indicator, setIndicator] = useState(null);
+
+  const isActive = (href) => pathname.startsWith(href);
+  // Nav remembers the last clicked link on its own; pin it to the URL instead
+  const activeHref = LINKS.find((l) => isActive(l.href))?.href ?? null;
+
+  const measureLink = useCallback((el) => {
+    if (!el) {
+      setIndicator((prev) => (prev ? { ...prev, opacity: 0 } : null));
+      return;
+    }
+    const pad = 11;
+    setIndicator({
+      left: el.offsetLeft + pad,
+      width: Math.max(0, el.offsetWidth - pad * 2),
+      opacity: 1,
+    });
+  }, []);
+
+  const syncToActive = useCallback(() => {
+    const activeEl = navRef.current?.querySelector('[aria-current="page"]');
+    measureLink(activeEl || null);
+  }, [measureLink]);
+
+  useEffect(() => {
+    const raf = window.requestAnimationFrame(syncToActive);
+    window.addEventListener("resize", syncToActive);
+    return () => {
+      window.cancelAnimationFrame(raf);
+      window.removeEventListener("resize", syncToActive);
+    };
+  }, [activeHref, syncToActive]);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() =>
@@ -75,10 +108,6 @@ export default function SiteNavbar() {
     window.dispatchEvent(new CustomEvent("calphy:toggle-chat"));
   };
 
-  const isActive = (href) => pathname.startsWith(href);
-  // Nav remembers the last clicked link on its own; pin it to the URL instead
-  const activeHref = LINKS.find((l) => isActive(l.href))?.href ?? null;
-
   const handleLogout = async () => {
     await logout();
     setExpanded(false);
@@ -112,7 +141,12 @@ export default function SiteNavbar() {
         </Navbar.Toggle>
 
         <Navbar.Collapse id="main-nav">
-          <Nav className="mx-lg-auto align-items-lg-center">
+          <Nav
+            ref={navRef}
+            className="mx-lg-auto align-items-lg-center position-relative"
+            data-has-indicator={indicator ? "true" : undefined}
+            onMouseLeave={syncToActive}
+          >
             {LINKS.map((l) => {
               const active = l.href === activeHref;
               return (
@@ -122,6 +156,8 @@ export default function SiteNavbar() {
                   href={l.href}
                   active={active}
                   aria-current={active ? "page" : undefined}
+                  onMouseEnter={(e) => measureLink(e.currentTarget)}
+                  onFocus={(e) => measureLink(e.currentTarget)}
                   onClick={() => setExpanded(false)}
                 >
                   <i className={`bi ${l.icon} nav-link-icon d-lg-none`} aria-hidden="true" />
@@ -129,6 +165,17 @@ export default function SiteNavbar() {
                 </Nav.Link>
               );
             })}
+            {indicator && (
+              <span
+                className="nav-underline-indicator d-none d-lg-block"
+                aria-hidden="true"
+                style={{
+                  transform: `translateX(${indicator.left}px)`,
+                  width: `${indicator.width}px`,
+                  opacity: indicator.opacity,
+                }}
+              />
+            )}
           </Nav>
 
           <div className="nav-actions ms-lg-3">
@@ -150,7 +197,7 @@ export default function SiteNavbar() {
                   <span className="spinner-border spinner-border-sm" />
                 </span>
               ) : isLoggedIn ? (
-                <Dropdown align="end">
+                <Dropdown align={{ lg: "end" }}>
                   <Dropdown.Toggle
                     as="button"
                     className="nav-user-chip"
@@ -162,7 +209,7 @@ export default function SiteNavbar() {
                     <span className="nav-username text-truncate">{user.username}</span>
                     <i className="bi bi-chevron-down nav-user-caret" />
                   </Dropdown.Toggle>
-                  <Dropdown.Menu className="shadow border-1">
+                  <Dropdown.Menu className="nav-user-menu shadow border-1">
                     <Dropdown.Item
                       as={Link}
                       href="/dashboard"
