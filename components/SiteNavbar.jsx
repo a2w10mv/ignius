@@ -24,6 +24,7 @@ export default function SiteNavbar() {
   const [scrolled, setScrolled] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [theme, setTheme] = useState(null);
+  const [showCinderDot, setShowCinderDot] = useState(false);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() =>
@@ -32,9 +33,29 @@ export default function SiteNavbar() {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
+
+    // Show Cinder notification dot if user hasn't opened it yet
+    try {
+      if (!localStorage.getItem("cinder_notification_seen")) {
+        setShowCinderDot(true);
+      }
+    } catch {}
+
+    const dismissDot = () => {
+      setShowCinderDot(false);
+      try {
+        localStorage.setItem("cinder_notification_seen", "true");
+      } catch {}
+    };
+
+    window.addEventListener("calphy:open-chat", dismissDot);
+    window.addEventListener("calphy:toggle-chat", dismissDot);
+
     return () => {
       window.cancelAnimationFrame(frame);
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("calphy:open-chat", dismissDot);
+      window.removeEventListener("calphy:toggle-chat", dismissDot);
     };
   }, []);
 
@@ -43,6 +64,15 @@ export default function SiteNavbar() {
     document.documentElement.dataset.theme = next;
     localStorage.setItem("calphy-theme", next);
     setTheme(next);
+  };
+
+  const handleCinderClick = () => {
+    setExpanded(false);
+    setShowCinderDot(false);
+    try {
+      localStorage.setItem("cinder_notification_seen", "true");
+    } catch {}
+    window.dispatchEvent(new CustomEvent("calphy:toggle-chat"));
   };
 
   const isActive = (href) => pathname.startsWith(href);
@@ -100,72 +130,71 @@ export default function SiteNavbar() {
 
           <div className="nav-actions d-flex align-items-center gap-2 ms-xl-3 mt-3 mt-xl-0">
             <SiteSearch onNavigate={() => setExpanded(false)} />
-            <button
-              type="button"
-              className="theme-toggle"
-              onClick={toggleTheme}
-              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-            >
-              <i
-                className={`bi ${theme === "dark" ? "bi-sun" : "bi-moon-stars"}`}
-                aria-hidden="true"
-              />
-            </button>
-            {authLoading ? (
-              <span className="nav-loading-pill">
-                <span className="spinner-border spinner-border-sm me-1" />
-              </span>
-            ) : isLoggedIn ? (
-              <Dropdown align="end">
-                <Dropdown.Toggle
-                  as="button"
-                  className="nav-user-chip border-0"
-                  style={{ cursor: "pointer" }}
-                >
-                  <span className="nav-avatar rounded-circle d-inline-flex align-items-center justify-content-center">
-                    {user.username[0].toUpperCase()}
-                  </span>
-                  <span className="nav-username">{user.username}</span>
-                  <i className="bi bi-chevron-down nav-user-caret" />
-                </Dropdown.Toggle>
-                <Dropdown.Menu className="shadow border-1">
-                  <Dropdown.Item
-                    as={Link}
-                    href="/dashboard"
-                    onClick={() => setExpanded(false)}
-                  >
-                    <i className="bi bi-graph-up-arrow me-2" /> My progress
-                  </Dropdown.Item>
-                  <Dropdown.Divider />
-                  <Dropdown.Item onClick={handleLogout} className="text-danger">
-                    <i className="bi bi-box-arrow-right me-2" /> Log out
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            ) : (
-              <Link
-                href="/login"
-                className="btn btn-flame btn-sm nav-login-btn"
-                onClick={() => setExpanded(false)}
-              >
-                <i className="bi bi-person me-1" /> Log in
-              </Link>
-            )}
-            {!/^\/quizzes\/[^/]+/.test(pathname || "") && (
+            <div className="nav-bottom-row">
               <button
                 type="button"
-                className="cinder-nav-trigger"
-                onClick={() => {
-                  setExpanded(false);
-                  window.dispatchEvent(new CustomEvent("calphy:toggle-chat"));
-                }}
-                title="Open Cinder AI Assistant"
-                aria-label="Toggle Cinder AI Assistant"
+                className="theme-toggle"
+                onClick={toggleTheme}
+                aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
               >
-                <CalphyMascot size={20} />
-                <span className="cinder-status-dot" />
+                <i
+                  className={`bi ${theme === "dark" ? "bi-sun" : "bi-moon-stars"}`}
+                  aria-hidden="true"
+                />
               </button>
-            )}
+              {authLoading ? (
+                <span className="nav-loading-pill">
+                  <span className="spinner-border spinner-border-sm" />
+                </span>
+              ) : isLoggedIn ? (
+                <Dropdown align="end">
+                  <Dropdown.Toggle
+                    as="button"
+                    className="nav-user-chip"
+                    style={{ cursor: "pointer" }}
+                  >
+                    <span className="nav-avatar rounded-circle d-inline-flex align-items-center justify-content-center">
+                      {user.username[0].toUpperCase()}
+                    </span>
+                    <span className="nav-username text-truncate">{user.username}</span>
+                    <i className="bi bi-chevron-down nav-user-caret" />
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu className="shadow border-1">
+                    <Dropdown.Item
+                      as={Link}
+                      href="/dashboard"
+                      onClick={() => setExpanded(false)}
+                    >
+                      <i className="bi bi-graph-up-arrow me-2" /> My progress
+                    </Dropdown.Item>
+                    <Dropdown.Divider />
+                    <Dropdown.Item onClick={handleLogout} className="text-danger">
+                      <i className="bi bi-box-arrow-right me-2" /> Log out
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              ) : (
+                <Link
+                  href="/login"
+                  className="btn btn-flame btn-sm nav-login-btn"
+                  onClick={() => setExpanded(false)}
+                >
+                  <i className="bi bi-person me-1" /> Log in
+                </Link>
+              )}
+              {!/^\/quizzes\/[^/]+/.test(pathname || "") && (
+                <button
+                  type="button"
+                  className="cinder-nav-trigger"
+                  onClick={handleCinderClick}
+                  title="Open Cinder AI Assistant"
+                  aria-label="Toggle Cinder AI Assistant"
+                >
+                  <CalphyMascot size={20} />
+                  {showCinderDot && <span className="cinder-status-dot" />}
+                </button>
+              )}
+            </div>
           </div>
         </Navbar.Collapse>
       </Container>
