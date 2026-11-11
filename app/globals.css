@@ -32,6 +32,7 @@
   --ease-in: cubic-bezier(0.55, 0, 1, 0.45);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-butter: cubic-bezier(0.22, 1, 0.36, 1);
   --font-sans: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
   --bs-body-color: var(--ink-soft);
@@ -525,7 +526,7 @@ a,
   letter-spacing: -0.025em;
   padding: 0;
   margin-right: 1.25rem;
-  transition: opacity 140ms ease;
+  transition: opacity 240ms var(--ease-butter);
 }
 
 .calphy-nav .navbar-brand:hover {
@@ -551,8 +552,8 @@ a,
   white-space: nowrap;
   letter-spacing: -0.01em;
   transition:
-    color 140ms ease,
-    background-color 140ms ease;
+    color 260ms var(--ease-butter),
+    background-color 260ms var(--ease-butter);
 }
 
 .calphy-nav .nav-link:hover {
@@ -586,10 +587,11 @@ a,
     border-radius: 2px;
     background: var(--ember);
     pointer-events: none;
+    will-change: transform, width;
     transition:
-      transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
-      width 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
-      opacity 150ms ease;
+      transform 360ms var(--ease-butter),
+      width 360ms var(--ease-butter),
+      opacity 220ms ease;
   }
 }
 
@@ -616,8 +618,8 @@ a,
   font-size: 1.1rem;
   line-height: 1;
   transition:
-    background-color 150ms ease,
-    border-color 150ms ease;
+    background-color 240ms var(--ease-butter),
+    border-color 240ms var(--ease-butter);
 }
 
 @media (min-width: 992px) {
@@ -662,10 +664,10 @@ a,
   font-size: 0.95rem;
   cursor: pointer;
   transition:
-    border-color 140ms ease,
-    color 140ms ease,
-    background-color 140ms ease,
-    transform 140ms var(--ease-out);
+    border-color 240ms var(--ease-butter),
+    color 240ms var(--ease-butter),
+    background-color 240ms var(--ease-butter),
+    transform 240ms var(--ease-butter);
 }
 
 .theme-toggle:hover {
@@ -699,9 +701,9 @@ a,
   cursor: pointer;
   white-space: nowrap;
   transition:
-    border-color 140ms ease,
-    background-color 140ms ease,
-    transform 140ms var(--ease-out);
+    border-color 240ms var(--ease-butter),
+    background-color 240ms var(--ease-butter),
+    transform 240ms var(--ease-butter);
 }
 
 .nav-user-chip::after {
@@ -751,9 +753,9 @@ a,
   white-space: nowrap;
   text-align: center;
   transition:
-    background-color 140ms ease,
-    border-color 140ms ease,
-    transform 140ms var(--ease-out);
+    background-color 240ms var(--ease-butter),
+    border-color 240ms var(--ease-butter),
+    transform 240ms var(--ease-butter);
 }
 
 .nav-login-btn:hover {
@@ -828,9 +830,9 @@ a,
   color: var(--ink);
   cursor: pointer;
   transition:
-    border-color 140ms ease,
-    background-color 140ms ease,
-    transform 140ms var(--ease-out);
+    border-color 240ms var(--ease-butter),
+    background-color 240ms var(--ease-butter),
+    transform 240ms var(--ease-butter);
 }
 
 .cinder-nav-trigger:hover {
@@ -884,10 +886,10 @@ a,
   text-align: left;
   cursor: pointer;
   transition:
-    border-color 140ms ease,
-    background-color 140ms ease,
-    color 140ms ease,
-    box-shadow 140ms ease;
+    border-color 240ms var(--ease-butter),
+    background-color 240ms var(--ease-butter),
+    color 240ms var(--ease-butter),
+    box-shadow 240ms var(--ease-butter);
 }
 
 .nav-search-trigger:hover {
