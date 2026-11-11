@@ -106,6 +106,18 @@ export default function Chat({
     });
   };
 
+  const handleNewChat = () => {
+    handleStop();
+    setInput("");
+    setMessages([
+      {
+        role: "assistant",
+        content: initialMessage,
+        suggestions: DEFAULT_INITIAL_SUGGESTIONS,
+      },
+    ]);
+  };
+
   const handleConfirmationResponse = (index, approved) => {
     const confirmation = messages[index]?.confirmation;
     if (!confirmation || confirmation.type !== "web-search") return;
@@ -312,27 +324,39 @@ export default function Chat({
   if (!isOpen) return null;
 
   return (
-    <section
+    <aside
       className="ai-chat-panel"
-      aria-label="Cinder course assistant"
+      aria-label="Cinder course assistant sidebar"
       aria-live="polite"
     >
       <header className="ai-chat-header">
-        <div className="ai-chat-header-mascot">
-          <CalphyMascot size={38} mood={isStreaming ? "think" : "wave"} />
-        </div>
-        <div className="ai-chat-header-info flex-grow-1">
-          <div className="ai-chat-title">Cinder</div>
+        <div className="ai-chat-header-brand">
+          <div className="ai-chat-header-mascot">
+            <CalphyMascot size={24} mood={isStreaming ? "think" : "wave"} />
+          </div>
+          <span className="ai-chat-title">Cinder</span>
           <ContextIndicator isLive={!isStreaming} />
         </div>
-        <button
-          type="button"
-          className="ai-chat-close"
-          aria-label="Close assistant"
-          onClick={onClose}
-        >
-          <i className="bi bi-x-lg" aria-hidden="true" />
-        </button>
+        <div className="ai-chat-header-actions">
+          <button
+            type="button"
+            className="ai-chat-icon-btn"
+            aria-label="New chat"
+            title="New chat"
+            onClick={handleNewChat}
+          >
+            <i className="bi bi-plus-lg" aria-hidden="true" />
+          </button>
+          <button
+            type="button"
+            className="ai-chat-icon-btn"
+            aria-label="Close sidebar"
+            title="Close sidebar (Esc)"
+            onClick={onClose}
+          >
+            <i className="bi bi-layout-sidebar-inset-reverse" aria-hidden="true" />
+          </button>
+        </div>
       </header>
 
       <div
@@ -397,11 +421,8 @@ export default function Chat({
           disabled={isStreaming}
           textareaRef={textareaRef}
         />
-        <div className="ai-chat-footnote">
-          Answers stay within the lessons and tools on this site.
-        </div>
       </div>
-    </section>
+    </aside>
   );
 }
 

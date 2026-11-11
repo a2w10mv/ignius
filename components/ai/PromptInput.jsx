@@ -83,7 +83,7 @@ export default function PromptInput({
           aria-live="polite"
           aria-atomic="true"
         >
-          {count}/{maxLength}
+          {count >= maxLength * 0.75 ? `${count}/${maxLength}` : "Enter ↵ to send"}
         </span>
 
         <div className="ai-prompt-actions">
@@ -104,7 +104,7 @@ export default function PromptInput({
               disabled={disabled || !value.trim()}
               aria-label="Send question"
             >
-              <i className="bi bi-send-fill" aria-hidden="true" />
+              <i className="bi bi-arrow-up" aria-hidden="true" />
             </button>
           )}
         </div>

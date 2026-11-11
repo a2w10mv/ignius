@@ -6,7 +6,6 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
-import CalphyMascot from "@/components/CalphyMascot";
 import Reasoning from "./Reasoning";
 import Sources from "./Sources";
 import Confirmation from "./Confirmation";
@@ -124,24 +123,27 @@ export default function Message({
     }
   };
 
+  const references = [];
+  const seenHrefs = new Set();
+  for (const s of sources || []) {
+    if (s?.href && !seenHrefs.has(s.href)) {
+      seenHrefs.add(s.href);
+      references.push({ title: s.title || s.label || s.href, href: s.href });
+    }
+  }
+  for (const l of links || []) {
+    if (l?.href && !seenHrefs.has(l.href)) {
+      seenHrefs.add(l.href);
+      references.push({ title: l.label || l.title || l.href, href: l.href });
+    }
+  }
+
   return (
     <div
       className={`ai-message ai-message-${isUser ? "user" : "assistant"}`}
       role="article"
       aria-label={`${isUser ? "User" : "Assistant"} message`}
     >
-      <div className="ai-message-avatar" aria-hidden="true">
-        {isUser ? (
-          <div className="ai-message-avatar-user">
-            <i className="bi bi-person-fill" />
-          </div>
-        ) : (
-          <div className="ai-message-avatar-assistant">
-            <CalphyMascot size={30} mood={isStreaming ? "think" : "wave"} />
-          </div>
-        )}
-      </div>
-
       <div className="ai-message-content">
         {isUser ? (
           <div className="ai-message-body ai-message-user-text">
@@ -214,7 +216,7 @@ export default function Message({
                   className="spinner-border spinner-border-sm me-2"
                   aria-hidden="true"
                 />
-                <span>Looking through the course…</span>
+                <span>Thinking…</span>
               </div>
             ) : null}
 
@@ -224,11 +226,6 @@ export default function Message({
                 <i className="bi bi-info-circle me-1" aria-hidden="true" />
                 <span>{notice}</span>
               </div>
-            )}
-
-            {/* Sources */}
-            {sources?.length > 0 && (
-              <Sources sources={sources} onLinkClick={onLinkClick} />
             )}
 
             {/* External Search Link */}
@@ -244,46 +241,6 @@ export default function Message({
               </a>
             )}
 
-            {/* Suggested Link Chips */}
-            {links?.length > 0 && (
-              <div
-                className="ai-message-links"
-                role="group"
-                aria-label="Related links"
-              >
-                {links.slice(0, 3).map((link, index) => {
-                  const key = `${link.href}-${index}`;
-                  const isInternal =
-                    typeof link.href === "string" &&
-                    link.href.startsWith("/") &&
-                    !link.href.startsWith("//");
-
-                  return isInternal ? (
-                    <Link
-                      key={key}
-                      href={link.href}
-                      onClick={onLinkClick}
-                      className="ai-message-link"
-                    >
-                      <span>{link.label || link.title}</span>
-                      <i className="bi bi-arrow-up-right ms-1" aria-hidden="true" />
-                    </Link>
-                  ) : (
-                    <a
-                      key={key}
-                      href={link.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="ai-message-link"
-                    >
-                      <span>{link.label || link.title}</span>
-                      <i className="bi bi-arrow-up-right ms-1" aria-hidden="true" />
-                    </a>
-                  );
-                })}
-              </div>
-            )}
-
             {/* Confirmation prompt */}
             {confirmation && (
               <Confirmation
@@ -292,26 +249,36 @@ export default function Message({
               />
             )}
 
-            {/* Copy button action bar */}
-            {body && !isStreaming && (
-              <div className="ai-message-actions">
-                <button
-                  type="button"
-                  className="ai-message-action-btn"
-                  onClick={handleCopy}
-                  title={copied ? "Copied response" : "Copy response"}
-                  aria-label={
-                    copied
-                      ? "Copied response to clipboard"
-                      : "Copy response to clipboard"
-                  }
-                >
-                  <i
-                    className={`bi ${copied ? "bi-check2 text-success" : "bi-copy"}`}
-                    aria-hidden="true"
+            {/* Unified Footer: Deduplicated References + Copy Action */}
+            {!isStreaming && (references.length > 0 || body) && (
+              <div className="ai-message-footer">
+                {references.length > 0 && (
+                  <Sources
+                    sources={references.slice(0, 3)}
+                    onLinkClick={onLinkClick}
                   />
-                  <span>{copied ? "Copied" : "Copy"}</span>
-                </button>
+                )}
+                {body && (
+                  <div className="ai-message-actions">
+                    <button
+                      type="button"
+                      className="ai-message-action-btn"
+                      onClick={handleCopy}
+                      title={copied ? "Copied response" : "Copy response"}
+                      aria-label={
+                        copied
+                          ? "Copied response to clipboard"
+                          : "Copy response to clipboard"
+                      }
+                    >
+                      <i
+                        className={`bi ${copied ? "bi-check2 text-success" : "bi-copy"}`}
+                        aria-hidden="true"
+                      />
+                      <span>{copied ? "Copied" : "Copy"}</span>
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </>

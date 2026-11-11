@@ -53,12 +53,39 @@ export default function CalphyChat() {
     setHint(0);
   }, [viewer]);
 
-  // other components (e.g. the landing "Ask Cinder" step) open the chat
-  // by dispatching this window event
+  const toggleChat = useCallback(() => {
+    setOpen((prev) => {
+      const next = !prev;
+      if (next) {
+        setSeenBy(viewer);
+        setHint(0);
+      }
+      return next;
+    });
+  }, [viewer]);
+
+  // other components (e.g. navbar toggle or landing "Ask Cinder" step) open/toggle the chat
   useEffect(() => {
     window.addEventListener("calphy:open-chat", openChat);
-    return () => window.removeEventListener("calphy:open-chat", openChat);
-  }, [openChat]);
+    window.addEventListener("calphy:toggle-chat", toggleChat);
+    return () => {
+      window.removeEventListener("calphy:open-chat", openChat);
+      window.removeEventListener("calphy:toggle-chat", toggleChat);
+    };
+  }, [openChat, toggleChat]);
+
+  // Sync body class so desktop layout docks the sidebar cleanly like VS Code / Claude Code
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    if (open && !onQuiz) {
+      document.body.classList.add("ai-sidebar-open");
+    } else {
+      document.body.classList.remove("ai-sidebar-open");
+    }
+    return () => {
+      document.body.classList.remove("ai-sidebar-open");
+    };
+  }, [open, onQuiz]);
 
   // In mobile view, close the chat when navigating so it does not block the redirected page
   useEffect(() => {
