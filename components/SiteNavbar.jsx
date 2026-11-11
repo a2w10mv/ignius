@@ -87,7 +87,7 @@ export default function SiteNavbar() {
 
   return (
     <Navbar
-      expand="xl"
+      expand="lg"
       fixed="top"
       className={`calphy-nav ${scrolled ? "scrolled" : ""}`}
       expanded={expanded}
@@ -103,32 +103,35 @@ export default function SiteNavbar() {
           aria-controls="main-nav"
           aria-expanded={expanded}
           aria-label={expanded ? "Close navigation" : "Open navigation"}
-          className="calphy-toggler border-0 shadow-none d-xl-none"
+          className="calphy-toggler border-0 shadow-none d-lg-none"
         >
           <i
-            className={`bi ${expanded ? "bi-x" : "bi-list"}`}
+            className={`bi ${expanded ? "bi-x-lg" : "bi-list"}`}
             aria-hidden="true"
           />
         </Navbar.Toggle>
 
         <Navbar.Collapse id="main-nav">
-          <Nav className="mx-auto align-items-xl-center" activeKey={activeHref}>
-            {LINKS.map((l) => (
-              <Nav.Link
-                key={l.href}
-                as={Link}
-                href={l.href}
-                eventKey={l.href}
-                aria-current={l.href === activeHref ? "page" : undefined}
-                onClick={() => setExpanded(false)}
-              >
-                <i className={`bi ${l.icon} me-2 d-xl-none`} />
-                {l.label}
-              </Nav.Link>
-            ))}
+          <Nav className="mx-lg-auto align-items-lg-center">
+            {LINKS.map((l) => {
+              const active = l.href === activeHref;
+              return (
+                <Nav.Link
+                  key={l.href}
+                  as={Link}
+                  href={l.href}
+                  active={active}
+                  aria-current={active ? "page" : undefined}
+                  onClick={() => setExpanded(false)}
+                >
+                  <i className={`bi ${l.icon} nav-link-icon d-lg-none`} aria-hidden="true" />
+                  <span>{l.label}</span>
+                </Nav.Link>
+              );
+            })}
           </Nav>
 
-          <div className="nav-actions d-flex align-items-center gap-2 ms-xl-3 mt-3 mt-xl-0">
+          <div className="nav-actions ms-lg-3">
             <SiteSearch onNavigate={() => setExpanded(false)} />
             <div className="nav-bottom-row">
               <button

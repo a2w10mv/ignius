@@ -503,28 +503,16 @@ a,
 }
 
 .calphy-nav {
-  height: 54px;
-  padding: 0.35rem 0;
+  padding: 0.45rem 0;
   border-bottom: 1px solid var(--line);
-  background: color-mix(in srgb, var(--surface) 84%, transparent);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  display: flex;
-  align-items: center;
+  background: var(--surface);
   transition:
-    background-color 200ms ease,
-    border-color 200ms ease,
-    box-shadow 200ms ease;
+    background-color 180ms ease,
+    border-color 180ms ease;
 }
 
-.calphy-nav.scrolled {
-  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
-  background: color-mix(in srgb, var(--surface) 95%, transparent);
-}
-
-:root[data-theme="dark"] .calphy-nav.scrolled {
-  box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.55);
-  background: color-mix(in srgb, var(--surface) 92%, transparent);
+.calphy-nav > .container {
+  min-height: 40px;
 }
 
 .calphy-nav .navbar-brand {
@@ -545,38 +533,56 @@ a,
 }
 
 .calphy-nav .navbar-nav {
-  gap: 0.2rem;
+  gap: 0.15rem;
 }
 
 .calphy-nav .nav-link {
+  position: relative;
   display: inline-flex;
-  height: 34px;
-  min-height: 34px;
+  height: 36px;
+  min-height: 36px;
   align-items: center;
-  justify-content: center;
-  padding: 0 0.75rem !important;
+  justify-content: flex-start;
+  padding: 0 0.7rem !important;
   border-radius: 6px;
   color: var(--muted);
-  font-size: 0.86rem;
+  font-size: 0.875rem;
   font-weight: 500;
   white-space: nowrap;
   letter-spacing: -0.01em;
   transition:
     color 140ms ease,
-    background-color 140ms ease,
-    transform 140ms var(--ease-out);
+    background-color 140ms ease;
 }
 
 .calphy-nav .nav-link:hover {
-  background: var(--surface-2);
   color: var(--ink);
+  background: color-mix(in srgb, var(--surface-2) 60%, transparent);
 }
 
 .calphy-nav .nav-link.active {
-  background: var(--surface-2);
   color: var(--ink);
   font-weight: 600;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  background: transparent;
+}
+
+@media (min-width: 992px) {
+  .calphy-nav .nav-link.active::after {
+    content: "";
+    position: absolute;
+    left: 0.7rem;
+    right: 0.7rem;
+    bottom: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--ember);
+  }
+}
+
+.calphy-nav .nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
 }
 
 .calphy-toggler,
@@ -584,23 +590,23 @@ a,
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
-  min-width: 34px;
-  min-height: 34px;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
   padding: 0 !important;
   border: 1px solid var(--line) !important;
   border-radius: 8px !important;
   background: var(--surface) !important;
   color: var(--ink) !important;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   line-height: 1;
   transition:
     background-color 150ms ease,
     border-color 150ms ease;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 992px) {
   .calphy-toggler,
   .navbar-toggler {
     display: none !important;
@@ -625,10 +631,10 @@ a,
 
 .theme-toggle {
   display: inline-flex;
-  width: 34px;
-  height: 34px;
-  min-width: 34px;
-  min-height: 34px;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
   align-items: center;
   justify-content: center;
   padding: 0;
@@ -662,7 +668,7 @@ a,
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  height: 34px;
+  height: 36px;
   padding: 0 0.65rem 0 0.35rem;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -704,7 +710,7 @@ a,
 }
 
 .nav-login-btn {
-  height: 34px;
+  height: 36px;
   padding: 0 0.85rem;
   border-radius: 8px;
   font-size: 0.82rem;
@@ -714,7 +720,7 @@ a,
 }
 
 .nav-loading-pill {
-  height: 34px;
+  height: 36px;
   padding: 0 0.75rem;
   display: inline-flex;
   align-items: center;
@@ -730,26 +736,25 @@ a,
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
-  min-width: 34px;
-  min-height: 34px;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
   padding: 0;
-  border: 1px solid rgba(234, 88, 12, 0.28);
+  border: 1px solid var(--line);
   border-radius: 8px;
-  background: var(--ember-tint);
+  background: var(--surface);
+  color: var(--ink);
   cursor: pointer;
   transition:
     border-color 140ms ease,
     background-color 140ms ease,
-    box-shadow 140ms ease,
     transform 140ms var(--ease-out);
 }
 
 .cinder-nav-trigger:hover {
-  border-color: var(--ember);
-  background: var(--ember-tint);
-  box-shadow: 0 0 10px rgba(234, 88, 12, 0.22);
+  border-color: var(--ink-soft);
+  background: var(--surface-2);
   transform: translateY(-1px);
 }
 
@@ -780,8 +785,8 @@ a,
 /* ---------- site search ---------- */
 .nav-search-trigger {
   display: inline-flex;
-  width: 9.75rem;
-  height: 34px;
+  width: 9.25rem;
+  height: 36px;
   align-items: center;
   gap: 0.45rem;
   padding: 0 0.5rem 0 0.7rem;
@@ -3096,8 +3101,8 @@ a.continue-card:hover {
 }
 
 body.ai-sidebar-open .cinder-nav-trigger {
-  border-color: var(--ember);
-  background: var(--ember-tint);
+  border-color: var(--ink-soft);
+  background: var(--surface-2);
 }
 
 /* Shadcn AI Primitives — VS Code Copilot / Claude Code / Codex Sidebar */
@@ -4566,22 +4571,31 @@ a.check-dot.current:hover {
   --bs-table-hover-bg: var(--surface-2);
 }
 
-@media (max-width: 1199.98px) {
+@media (max-width: 991.98px) {
   .calphy-nav .navbar-collapse {
-    margin-top: 0.6rem;
-    padding: 0.85rem;
+    margin-top: 0.55rem;
+    padding: 0.75rem;
     border: 1px solid var(--line);
     border-radius: var(--radius-card);
     background: var(--surface);
-    box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.25), 0 0 0 1px var(--line);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .calphy-nav .navbar-nav {
+    width: 100%;
+    align-items: stretch !important;
+    gap: 0.15rem;
   }
 
   .calphy-nav .nav-link {
     display: flex;
+    width: 100%;
     align-items: center;
+    justify-content: flex-start !important;
+    text-align: left;
     height: 40px;
     min-height: 40px;
-    padding: 0 0.85rem !important;
+    padding: 0 0.75rem !important;
     border-radius: 8px;
     font-size: 0.92rem;
     font-weight: 500;
@@ -4589,7 +4603,7 @@ a.check-dot.current:hover {
   }
 
   .calphy-nav .nav-link:hover {
-    background: var(--surface-2);
+    background: color-mix(in srgb, var(--surface-2) 55%, transparent);
     color: var(--ink);
   }
 
@@ -4599,23 +4613,25 @@ a.check-dot.current:hover {
     font-weight: 600;
   }
 
-  .calphy-nav .nav-link i {
-    font-size: 1.05rem;
+  .calphy-nav .nav-link .nav-link-icon {
+    font-size: 1rem;
     width: 1.5rem;
     color: var(--muted);
+    flex-shrink: 0;
   }
 
-  .calphy-nav .nav-link.active i {
+  .calphy-nav .nav-link.active .nav-link-icon {
     color: var(--ember);
   }
 
   .calphy-nav .nav-actions {
     display: flex;
     flex-direction: column;
+    align-items: stretch;
     gap: 0.65rem;
     width: 100%;
-    margin-top: 0.75rem !important;
-    padding-top: 0.75rem;
+    margin-top: 0.65rem !important;
+    padding-top: 0.65rem;
     border-top: 1px solid var(--line);
   }
 
@@ -4623,7 +4639,7 @@ a.check-dot.current:hover {
     width: 100%;
     height: 38px;
     min-width: 0;
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     border-radius: 8px;
     background: var(--surface-2);
   }
@@ -4631,39 +4647,37 @@ a.check-dot.current:hover {
   .calphy-nav .nav-bottom-row {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     gap: 0.5rem;
     width: 100%;
   }
 
-  .calphy-nav .nav-bottom-row .theme-toggle,
-  .calphy-nav .nav-bottom-row .cinder-nav-trigger {
-    flex: 0 0 38px;
-    width: 38px;
-    height: 38px;
-    min-width: 38px;
-    min-height: 38px;
-    border-radius: 8px;
-  }
-
   .calphy-nav .nav-bottom-row > .dropdown,
-  .calphy-nav .nav-bottom-row > a.btn {
-    flex: 1 1 auto;
-    min-width: 0;
+  .calphy-nav .nav-bottom-row > .nav-login-btn,
+  .calphy-nav .nav-bottom-row > .nav-loading-pill {
+    order: -1;
+    margin-right: auto;
+    flex: 0 0 auto;
+    width: auto;
   }
 
-  .calphy-nav .nav-bottom-row .nav-user-chip {
-    width: 100%;
-    height: 38px;
-    justify-content: center;
+  .calphy-nav .nav-bottom-row .nav-user-chip,
+  .calphy-nav .nav-bottom-row .nav-login-btn {
+    width: auto;
+    height: 36px;
+    justify-content: flex-start;
     border-radius: 8px;
     border: 1px solid var(--line);
-    background: var(--surface-2);
+    background: var(--surface);
   }
 
-  .calphy-nav .nav-bottom-row .nav-login-btn {
-    width: 100%;
-    height: 38px;
-    justify-content: center;
+  .calphy-nav .nav-bottom-row .theme-toggle,
+  .calphy-nav .nav-bottom-row .cinder-nav-trigger {
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
     border-radius: 8px;
   }
 }
