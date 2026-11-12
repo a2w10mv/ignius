@@ -1,0 +1,43 @@
+name: ignius
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    image: ignius-web:1.0
+    container_name: ignius-web
+    ports:
+      - "${HOST_PORT:-8080}:80"
+    depends_on:
+      - app
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ignius-app:1.0
+    container_name: ignius-app
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DATABASE_URL=${DATABASE_URL:-}
+      - SESSION_SECRET=${SESSION_SECRET:-}
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+      - GROQ_MODEL=${GROQ_MODEL:-}
+    expose:
+      - "3000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:3000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
