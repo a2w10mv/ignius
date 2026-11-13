@@ -8,11 +8,7 @@ export default function Sources({ sources, onLinkClick }) {
   }
 
   return (
-    <div className="ai-sources" role="group" aria-label="Course sources">
-      <span className="ai-sources-label">
-        <i className="bi bi-book ai-sources-header-icon" aria-hidden="true" />
-        <span>Sources</span>
-      </span>
+    <div className="ai-sources" role="group" aria-label="Course references">
       <div className="ai-sources-list">
         {sources.map((source, index) => {
           const key = source.href ? `${source.href}-${index}` : index;
@@ -31,10 +27,14 @@ export default function Sources({ sources, onLinkClick }) {
                 title={source.title}
               >
                 <i
-                  className="bi bi-journal-bookmark ai-source-icon"
+                  className="bi bi-journal-text ai-source-icon"
                   aria-hidden="true"
                 />
                 <span className="ai-source-title">{source.title}</span>
+                <i
+                  className="bi bi-arrow-up-right ai-source-arrow"
+                  aria-hidden="true"
+                />
               </Link>
             );
           }
@@ -54,6 +54,10 @@ export default function Sources({ sources, onLinkClick }) {
                 aria-hidden="true"
               />
               <span className="ai-source-title">{source.title}</span>
+              <i
+                className="bi bi-arrow-up-right ai-source-arrow"
+                aria-hidden="true"
+              />
             </a>
           );
         })}

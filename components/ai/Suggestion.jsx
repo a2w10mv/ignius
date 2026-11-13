@@ -25,7 +25,7 @@ export default function Suggestion({
           aria-label={`Ask: ${suggestion}`}
         >
           <i
-            className="bi bi-sparkles ai-suggestion-icon"
+            className="bi bi-arrow-return-right ai-suggestion-icon"
             aria-hidden="true"
           />
           <span>{suggestion}</span>

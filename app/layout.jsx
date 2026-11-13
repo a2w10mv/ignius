@@ -7,6 +7,7 @@ import SiteNavbar from "@/components/SiteNavbar";
 import SiteFooter from "@/components/SiteFooter";
 import CalphyChat from "@/components/CalphyChat";
 import SaveProgressPrompt from "@/components/SaveProgressPrompt";
+import GlobalTooltip from "@/components/GlobalTooltip";
 import { returningRedirectScript } from "@/lib/visit";
 
 export const metadata = {
@@ -63,6 +64,7 @@ export default function RootLayout({ children }) {
           <SiteFooter />
           <CalphyChat />
           <SaveProgressPrompt />
+          <GlobalTooltip />
         </UserProvider>
       </body>
     </html>

@@ -1,64 +1,61 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Modal } from "react-bootstrap";
 import CalphyMascot from "@/components/CalphyMascot";
 import { useUser } from "@/components/UserContext";
 import { Chat } from "@/components/ai";
 
-// idle thought-bubble lines; "…" beats in between make Cinder look like it's thinking
-const idleHints = [
-  "Ask Cinder",
-  "Stuck on a formula?",
-  "Need °C → °F fast?",
-  "Want a lesson preview?",
-  "Curious about heat?",
-];
-
 export default function CalphyChat() {
   const [open, setOpen] = useState(false);
-  const { user } = useUser();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const { isLoggedIn } = useUser();
   const pathname = usePathname() || "";
 
   // no assistant while a quiz is being taken (/quizzes/<slug>), the list page is fine
   const onQuiz = /^\/quizzes\/[^/]+/.test(pathname);
-  // the landing's hero Cinder already talks, so the launcher stays quiet there
-  const onLanding = pathname === "/" || pathname === "/welcome";
-  const viewer = user ? `user:${user.id}` : "guest";
-  const [seenBy, setSeenBy] = useState(null);
-  const seen = seenBy === viewer;
-  const [hint, setHint] = useState(0);
-  const [thinking, setThinking] = useState(false);
-
-  useEffect(() => {
-    if (open || seen || onQuiz || onLanding) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let thinkTimer;
-    const cycle = window.setInterval(() => {
-      setThinking(true);
-      thinkTimer = window.setTimeout(() => {
-        setHint((i) => (i + 1) % idleHints.length);
-        setThinking(false);
-      }, 1100);
-    }, 4800);
-    return () => {
-      window.clearInterval(cycle);
-      window.clearTimeout(thinkTimer);
-    };
-  }, [open, seen, onQuiz, onLanding]);
+  const isSidebarVisible = open && isLoggedIn && !onQuiz;
 
   const openChat = useCallback(() => {
+    if (!isLoggedIn) {
+      setShowAuthModal(true);
+      return;
+    }
     setOpen(true);
-    setSeenBy(viewer);
-    setHint(0);
-  }, [viewer]);
+  }, [isLoggedIn]);
 
-  // other components (e.g. the landing "Ask Cinder" step) open the chat
-  // by dispatching this window event
+  const toggleChat = useCallback(() => {
+    if (!isLoggedIn) {
+      setShowAuthModal(true);
+      return;
+    }
+    setOpen((prev) => !prev);
+  }, [isLoggedIn]);
+
+  // Navbar Cinder logo button or "Ask Cinder" buttons dispatch these events
   useEffect(() => {
     window.addEventListener("calphy:open-chat", openChat);
-    return () => window.removeEventListener("calphy:open-chat", openChat);
-  }, [openChat]);
+    window.addEventListener("calphy:toggle-chat", toggleChat);
+    return () => {
+      window.removeEventListener("calphy:open-chat", openChat);
+      window.removeEventListener("calphy:toggle-chat", toggleChat);
+    };
+  }, [openChat, toggleChat]);
+
+  // Sync body class so desktop layout docks the sidebar cleanly like VS Code / Claude Code
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    if (isSidebarVisible) {
+      document.body.classList.add("ai-sidebar-open");
+    } else {
+      document.body.classList.remove("ai-sidebar-open");
+    }
+    return () => {
+      document.body.classList.remove("ai-sidebar-open");
+    };
+  }, [isSidebarVisible]);
 
   // In mobile view, close the chat when navigating so it does not block the redirected page
   useEffect(() => {
@@ -74,37 +71,60 @@ export default function CalphyChat() {
     }
   };
 
+  const closeAuthModal = () => setShowAuthModal(false);
+
   if (onQuiz) return null;
 
   return (
     <>
-      {!open && (
-        <button
-          type="button"
-          className={`mascot-fab${seen ? "" : " idle"}`}
-          onClick={openChat}
-          aria-label="Open Cinder course assistant"
-        >
-          <CalphyMascot size={50} mood={!seen && thinking ? "think" : "wave"} />
-          {!seen && !onLanding && (
-            <span className="thought-bubble" aria-hidden="true">
-              {thinking ? (
-                <span className="thought-dots">
-                  <i />
-                  <i />
-                  <i />
-                </span>
-              ) : (
-                <span key={hint} className="thought-text">
-                  {idleHints[hint]}
-                </span>
-              )}
-            </span>
-          )}
-        </button>
-      )}
+      <Modal
+        show={showAuthModal && !isLoggedIn}
+        onHide={closeAuthModal}
+        centered
+        contentClassName="save-prompt"
+        aria-labelledby="cinder-auth-prompt-title"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title
+            id="cinder-auth-prompt-title"
+            className="h5 fw-bold d-flex align-items-center gap-2"
+          >
+            <CalphyMascot size={28} mood="wave" />
+            <span>Log in to chat with Cinder</span>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Cinder AI is available exclusively to signed-in learners. Log in or
+          create a free account to ask physics questions, solve formulas step by
+          step, and get personalized study help.
+        </Modal.Body>
+        <Modal.Footer>
+          <button
+            type="button"
+            className="btn btn-outline-ink"
+            onClick={closeAuthModal}
+          >
+            Maybe later
+          </button>
+          <Link
+            href="/register"
+            className="btn btn-outline-ink"
+            onClick={closeAuthModal}
+          >
+            Sign up
+          </Link>
+          <Link
+            href="/login"
+            className="btn btn-flame"
+            onClick={closeAuthModal}
+          >
+            Log in
+          </Link>
+        </Modal.Footer>
+      </Modal>
+
       <Chat
-        isOpen={open}
+        isOpen={isSidebarVisible}
         onClose={() => setOpen(false)}
         onLinkClick={handleLinkClick}
       />
